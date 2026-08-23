@@ -1,0 +1,5 @@
+FBI_API_KEY=your_real_key_here
+DB_HOST=localhost
+DB_USER=your_real_mysql_user
+DB_PASSWORD=your_real_mysql_password
+DB_NAME=fbi_crime_pipeline
