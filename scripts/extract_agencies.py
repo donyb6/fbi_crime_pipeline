@@ -12,7 +12,7 @@ from config.db import get_session
 
 load_dotenv()
 
-API_BASE = "https://api.usa.gov/crime/fbi/cde"
+API_BASE = os.getenv("API_BASE")
 API_KEY = os.getenv("FBI_API_KEY")
 STATES = [s.strip().upper() for s in os.getenv("STATES", "").split(",") if s.strip()]
 
