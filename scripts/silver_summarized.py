@@ -51,3 +51,5 @@ def flatten_offenses(raw_json: dict, state_abbr: str) -> list[dict]:
     actuals = raw_json.get("offenses", {}).get("actuals", {})
     rates = raw_json.get("offenses", {}).get("rates", {})
     populations = raw_json.get("populations", {})
+    
+    state_actuals = actuals.get(f"{state_name} Offenses", {})
