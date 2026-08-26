@@ -46,10 +46,19 @@ def ensure_table(session):
 
 def flatten_offenses(raw_json: dict, state_abbr: str) -> list[dict]:
     """Turn the mm-yyyy time series offense dict into a flat list of offense rows."""
-    state_name = STATE_NAMES.get(state_abbr, "Unknown")
+    state_name = STATE_NAMES.get(state_abbr)
+    if not state_name:
+        print(f"  Warning: no full name mapping for {state_abbr}, skipping")
+        return []
     
     actuals = raw_json.get("offenses", {}).get("actuals", {})
     rates = raw_json.get("offenses", {}).get("rates", {})
     populations = raw_json.get("populations", {})
     
     state_actuals = actuals.get(f"{state_name} Offenses", {})
+    state_clearances = actuals.get(f"{state_name} Clearances", {})
+    us_actuals = actuals.get("United States Offenses", {})
+    us_clearances = actuals.get("United States Clearances", {})
+    
+    state_rates = rates.get(f"{state_name} Offenses", {})
+    state_clearance_rates = rates.get(f"{state_name} Clearances", {})
