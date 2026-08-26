@@ -62,3 +62,4 @@ def flatten_offenses(raw_json: dict, state_abbr: str) -> list[dict]:
     
     state_rates = rates.get(f"{state_name} Offenses", {})
     state_clearance_rates = rates.get(f"{state_name} Clearances", {})
+    
