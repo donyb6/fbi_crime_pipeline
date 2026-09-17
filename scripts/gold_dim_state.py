@@ -16,7 +16,7 @@ STATE_DIMENSION = [
 
 def ensure_table(session):
     session.execute(text("""
-        CREATE TABLE IF NOT EXISTS dim_state (
+        CREATE TABLE IF NOT EXISTS gold_dim_state (
             state_abbr VARCHAR(2) PRIMARY KEY,
             state_name VARCHAR(100),
             region VARCHAR(50)
@@ -31,7 +31,7 @@ def run():
     for row in STATE_DIMENSION:
         session.execute(
             text("""
-                 INSERT INTO dim_state (state_abbr, state_name, region)
+                 INSERT INTO gold_dim_state (state_abbr, state_name, region)
                  VALUES (:state_abbr, :state_name, :region)
                  ON DUPLICATE KEY UPDATE
                     state_name = VALUES(state_name),
