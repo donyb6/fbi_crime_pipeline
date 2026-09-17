@@ -36,7 +36,7 @@ def ensure_table(session):
 def run():
     session = get_session()
     ensure_table(session)
-    
+
     for row in OFFENSE_DIMENSION:
         session.execute(
             text("""
@@ -48,10 +48,10 @@ def run():
             """),
             row,
         )
-        
-        session.commit()
-        session.close()
-        print(f"Done. {len(OFFENSE_DIMENSION)} offense rows written.")
+
+    session.commit()
+    session.close()
+    print(f"Done. {len(OFFENSE_DIMENSION)} offense rows written.")
 
 if __name__ == "__main__":
     run()
