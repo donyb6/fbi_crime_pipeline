@@ -27,7 +27,6 @@ def ensure_table(session):
 
 
 def flatten_agencies(raw_json: dict, state_abbr: str) -> list[dict]:
-    """Turn a county-grouped agency dict into a flat list of agency rows."""
     rows = []
     for county, agencies in raw_json.items():
         for agency in agencies:
@@ -51,8 +50,18 @@ def run():
     ensure_table(session)
 
     bronze_rows = session.execute(
-        text("SELECT state_abbr, response_json FROM bronze_agencies")
-    ).fetchall()
+    text("""
+        SELECT b.state_abbr, b.response_json
+        FROM bronze_agencies b
+        INNER JOIN (
+            SELECT state_abbr, MAX(extracted_at) AS latest_extracted_at
+            FROM bronze_agencies
+            GROUP BY state_abbr
+        ) latest
+        ON b.state_abbr = latest.state_abbr
+        AND b.extracted_at = latest.latest_extracted_at
+    """)
+).fetchall()
 
     total_inserted = 0
 
