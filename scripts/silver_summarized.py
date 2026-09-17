@@ -96,9 +96,18 @@ def run():
 
     bronze_rows = session.execute(
         text("""
-            SELECT state_abbr, offense_code, response_json
+            SELECT b.state_abbr, b.offense_code, b.response_json
+        FROM bronze_summarized_offenses b
+        INNER JOIN (
+            SELECT state_abbr, offense_code, MAX(extracted_at) AS latest_extracted_at
             FROM bronze_summarized_offenses
             WHERE http_status = 200
+            GROUP BY state_abbr, offense_code
+        ) latest
+        ON b.state_abbr = latest.state_abbr
+        AND b.offense_code = latest.offense_code
+        AND b.extracted_at = latest.latest_extracted_at
+        WHERE b.http_status = 200
         """)
     ).fetchall()
 
