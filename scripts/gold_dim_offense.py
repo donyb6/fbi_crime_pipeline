@@ -7,6 +7,8 @@ from sqlalchemy import text
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config.db import get_session
 
+
+# static reference data confirmed from the fbi website
 OFFENSE_DIMENSION = [
     {"offense_code": "V",   "offense_name": "Violent Crime (All)",   "category": "Violent"},
     {"offense_code": "HOM", "offense_name": "Homicide",              "category": "Violent"},
@@ -30,3 +32,26 @@ def ensure_table(session):
         )
     """))
     session.commit()
+    
+def run():
+    session = get_session()
+    ensure_table(session)
+    
+    for row in OFFENSE_DIMENSION:
+        session.execute(
+            text("""
+                INSERT INTO gold_dim_offense (offense_code, offense_name, category)
+                VALUES (:offense_code, :offense_name, :category)
+                ON DUPLICATE KEY UPDATE
+                    offense_name = VALUES(offense_name),
+                    category = VALUES(category)
+            """),
+            row,
+        )
+        
+        session.commit()
+        session.close()
+        print(f"Done. {len(OFFENSE_DIMENSION)} offense rows written.")
+
+if __name__ == "__main__":
+    run()
