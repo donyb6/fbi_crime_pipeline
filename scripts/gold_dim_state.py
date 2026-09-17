@@ -1,4 +1,3 @@
-# GOLD LAYER - dim_state
 import os
 import sys
 
