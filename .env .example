@@ -1,5 +1,7 @@
-FBI_API_KEY=your_real_key_here
-DB_HOST=localhost
-DB_USER=your_real_mysql_user
-DB_PASSWORD=your_real_mysql_password
-DB_NAME=fbi_crime_pipeline
+FBI_API_KEY=api_key
+STATES=CA,TX,WY,VT #replace with preferred states
+API_BASE="https://api.usa.gov/crime/fbi/cde"
+MYSQL_HOST=host
+MYSQL_USER=mysql_user
+MYSQL_PASSWORD=mysql_password
+MYSQL_DATABASE=db_name
